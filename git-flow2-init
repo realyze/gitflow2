@@ -28,13 +28,6 @@ function mark_action_required {
 
 BRANCHES="develop master gitflow-config"
 
-if [[ -n "$(git diff --shortstat)" ]]; then
-  echo "Your repository is one dirty dirty repository."
-  echo "Please commit or stash your changes and then run me again."
-  echo "Have a nice day!"
-  exit 1
-fi
-
 start_spinner "Fetching from origin..."
 err=$(git fetch -a 2>&1 >/dev/null) || {
   stop_spinner 1
@@ -48,11 +41,14 @@ echored "Check Required Branches"
 echo "Making sure required branches exist: ${BRANCHES}"
 
 for branch in ${BRANCHES}; do
-  if ! git checkout ${branch} >/dev/null 2>/dev/null; then
+  if ! git branch -a | grep -q -E "/?${branch}"; then
     echo
     echo "No branch '${branch}' found. Will create one for you for free."
-    git checkout -b ${branch}
+    current=$(git rev-parse --abbrev-ref HEAD)
+    git branch ${branch}
+    git symbolic-ref HEAD refs/heads/${branch}
     git commit --allow-empty --message "Initial branch commit."
+    git checkout ${current} >/dev/null
     echo
   else
     echo -n "Branch '${branch}' found. "; print_checkmark
