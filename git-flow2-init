@@ -108,7 +108,7 @@ echored "Git Commit Hook"
 
 root="$(git rev-parse --show-toplevel)"
 hook_path="$root/.git/hooks/commit-msg"
-hook_executable="$(which git-flow2-commit-msg-hook)"
+hook_executable="$(which git-trunk-hooks-commit-msg)"
 
 if [[ ! -f "${hook_path}" ]]; then
   test_output=""
