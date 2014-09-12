@@ -7,6 +7,7 @@ __normal=`tput sgr0`
 
 GIT_CFG_SECTION='gitflow2'
 GIT_CFG_INITIALIZED="${GIT_CFG_SECTION}.initialized"
+CONFIG_BRANCH="develop"
 
 function flush_stdio {
   while read -e -t 1; do : ; done
@@ -49,7 +50,7 @@ function ensure_pt {
     global_cfg=$(cat "${HOME}/.gitflow.yml")
   fi
 
-  local local_cfg=$(git show gitflow-config:gitflow.yml) || {
+  local local_cfg=$(git show ${CONFIG_BRANCH}:gitflow.yml) || {
     handle_missing_config
   }
 

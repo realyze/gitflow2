@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+if [[ "$1" == "AreYouWhoIthinkYouAreHuh" ]]; then
+  echo "IAmGitFlowWebhookYaDoofus!"
+  exit 0
+fi
+
 commit_msg_file=$1
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 story_id=$(echo ${current_branch} | rev | cut -d"/" -f 1 | rev)
